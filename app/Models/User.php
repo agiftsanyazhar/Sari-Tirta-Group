@@ -20,7 +20,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        // 'email',
         'username',
         'password',
         'preferred_timezone',
@@ -47,12 +47,22 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get all of the appointment for the User
+     * Get all of the creator for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function appointment(): HasMany
+    public function creator(): HasMany
     {
-        return $this->hasMany(Appointment::class);
+        return $this->hasMany(Appointment::class, 'creator_id');
+    }
+
+    /**
+     * Get all of the receiver for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function receiver(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'receiver_id');
     }
 }

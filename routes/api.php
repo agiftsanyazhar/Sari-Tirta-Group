@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\{AppointmentController, AuthController, UserController};
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth:sanctum');
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+
+    Route::get('/appointment{creator?}{receiver?}', [AppointmentController::class, 'index'])->name('appointment.index');
+    Route::get('/appointment/upcoming', [AppointmentController::class, 'upcoming'])->name('appointment.upcoming');
+    Route::match(['post', 'put'], '/appointment/{id?}', [AppointmentController::class, 'store'])->name('appointment.store');
+    Route::get('/appointment/{id}', [AppointmentController::class, 'destroy'])->name('appointment.destroy');
 });

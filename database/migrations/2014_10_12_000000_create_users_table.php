@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            // $table->string('email')->unique();
+            // $table->timestamp('email_verified_at')->nullable();
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('preferred_timezone');
+            $table->enum('preferred_timezone', ['Asia/Jakarta', 'Pacific/Auckland', 'Europe/Berlin']);
             $table->rememberToken();
             $table->timestamps();
         });

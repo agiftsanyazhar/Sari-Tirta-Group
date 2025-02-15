@@ -17,21 +17,21 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'name' => 'Admin',
-                'email' => 'admin@gmail.com',
+                // 'email' => 'admin@gmail.com',
                 'username' => 'admin',
                 'password' => Hash::make('12345678'),
                 'preferred_timezone' => 'Asia/Jakarta',
             ],
             [
                 'name' => 'User 1',
-                'email' => 'user1@gmail.com',
+                // 'email' => 'user1@gmail.com',
                 'username' => 'user1',
                 'password' => Hash::make('12345678'),
                 'preferred_timezone' => 'Pacific/Auckland',
             ],
             [
                 'name' => 'User 2',
-                'email' => 'user2@gmail.com',
+                // 'email' => 'user2@gmail.com',
                 'username' => 'user2',
                 'password' => Hash::make('12345678'),
                 'preferred_timezone' => 'Europe/Berlin',
