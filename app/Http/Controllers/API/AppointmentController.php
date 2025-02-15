@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Helpers\TimeHelper;
+use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AppointmentRequest;
 use App\Models\Appointment;
@@ -58,8 +58,8 @@ class AppointmentController extends Controller
 
             $userTimezone = auth()->user()->preferred_timezone;
 
-            $start = TimeHelper::convertToUserTimezone($request->start, $userTimezone);
-            $end = TimeHelper::convertToUserTimezone($request->end, $userTimezone);
+            $start = Helper::convertToUserTimezone($request->start, $userTimezone);
+            $end = Helper::convertToUserTimezone($request->end, $userTimezone);
 
             $validationError = $this->validateAppointmentTime($start, $end);
             if ($validationError) {
@@ -168,20 +168,8 @@ class AppointmentController extends Controller
         $userTimezone = auth()->user()->preferred_timezone;
         $userLocalTime = Carbon::now($userTimezone)->toDateTimeString();
 
-        if ($start->hour <= 7 || $start->hour >= 18) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Your timezone is set to ' . auth()->user()->preferred_timezone . ' and your local time is ' . $userLocalTime . ', which is outside of working hours (08:00 - 17:00).',
-                'error' => 'Start time must be within working hours (08:00 - 17:00) of your timezone.'
-            ], 400);
-        }
-
-        if ($end->hour <= 7 || $end->hour >= 18) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Your timezone is set to ' . auth()->user()->preferred_timezone . ' and your local time is ' . $userLocalTime . ', which is outside of working hours (08:00 - 17:00).',
-                'error' => 'End time must be within working hours (08:00 - 17:00) of your timezone.'
-            ], 400);
+        if (!Helper::isWorkingHours($start) || !Helper::isWorkingHours($end)) {
+            return response()->json(['success' => false, 'error' => 'Appointment must be within working hours (08:00 - 17:00).'], 400);
         }
 
         if ($end->lte($start)) {
