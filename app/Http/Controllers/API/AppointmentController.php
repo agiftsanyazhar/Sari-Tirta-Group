@@ -21,10 +21,10 @@ class AppointmentController extends Controller
         $query = Appointment::query();
         $userId = auth()->id();
 
-        if ($request->has('creator') && $request->query('creator') == 'true') {
+        if ($request->query('creator') === 'true') {
             $query->where('creator_id', $userId);
             $appointments = $query->with('receiver')->get();
-        } elseif ($request->has('receiver') && $request->query('receiver') == 'true') {
+        } elseif ($request->query('receiver') === 'true') {
             $query->where('receiver_id', $userId);
             $appointments = $query->with('creator')->get();
         } else {
@@ -37,6 +37,7 @@ class AppointmentController extends Controller
             'data' => $appointments,
         ], 200);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -55,15 +56,15 @@ class AppointmentController extends Controller
 
             $data['creator_id'] = auth()->id();
 
-            // $userTimezone = auth()->user()->preferred_timezone;
+            $userTimezone = auth()->user()->preferred_timezone;
 
-            // $start = TimeHelper::convertToUserTimezone($request->start, $userTimezone);
-            // $end = TimeHelper::convertToUserTimezone($request->end, $userTimezone);
+            $start = TimeHelper::convertToUserTimezone($request->start, $userTimezone);
+            $end = TimeHelper::convertToUserTimezone($request->end, $userTimezone);
 
-            // $validationError = $this->validateAppointmentTime($start, $end);
-            // if ($validationError) {
-            //     return $validationError;
-            // }
+            $validationError = $this->validateAppointmentTime($start, $end);
+            if ($validationError) {
+                return $validationError;
+            }
 
             if ($id != null) {
                 $appointment = Appointment::where([

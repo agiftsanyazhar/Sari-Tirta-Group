@@ -21,7 +21,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
 
-    Route::get('/appointment{creator?}{receiver?}', [AppointmentController::class, 'index'])->name('appointment.index');
+    Route::get('/appointment', [AppointmentController::class, 'index'])->name('appointment.index');
     Route::get('/appointment/upcoming', [AppointmentController::class, 'upcoming'])->name('appointment.upcoming');
     Route::match(['post', 'put'], '/appointment/{id?}', [AppointmentController::class, 'store'])->name('appointment.store');
     Route::get('/appointment/{id}', [AppointmentController::class, 'destroy'])->name('appointment.destroy');
