@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-between align-items-center">
         <!-- Logo -->
         <div class="logo">
-            <a href="{{ route('dashboard.appointment.index') }}">
+            <a href="{{ route('dashboard.appointment.index', ['creator' => 'true']) }}">
                 <span class="fs-4">Dashboard</span>
             </a>
         </div>

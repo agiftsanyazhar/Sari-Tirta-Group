@@ -121,6 +121,7 @@ class AppointmentController extends Controller
                 ->orWhere('receiver_id', auth()->id());
         })
             ->where('start', '>=', $now)
+            ->orderBy('start', 'asc')
             ->get();
 
         return response()->json([

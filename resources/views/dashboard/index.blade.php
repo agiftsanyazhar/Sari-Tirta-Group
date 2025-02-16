@@ -85,7 +85,7 @@
                                     <label>Penerima<span class="text-danger fw-bold">*</span></label>
                                     <select class="form-control" name="receiver_id" required>
                                         <option value="" disabled selected hidden>Pilih penerima</option>
-                                        @foreach ($users->except(auth()->id()) as $user)
+                                        @foreach ($users as $user)
                                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                                         @endforeach
                                     </select>

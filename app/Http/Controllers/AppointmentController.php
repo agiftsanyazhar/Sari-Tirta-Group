@@ -13,13 +13,26 @@ class AppointmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $appointments = Appointment::all();
-        $users = User::all();
+        $query = Appointment::query();
+        $userId = auth()->id();
+
+        $users = User::where('id', '!=', auth()->id())->get();
+
+        if ($request->query('creator') === 'true') {
+            $query->where('creator_id', $userId);
+            $appointments = $query->with('receiver')->get();
+            $title = 'My Appointments';
+        }
+        if ($request->query('receiver') === 'true') {
+            $query->where('receiver_id', $userId);
+            $appointments = $query->with('creator')->get();
+            $title = 'My Invitations';
+        }
 
         $data = [
-            'title' => 'Appointments',
+            'title' => $title,
             'appointments' => $appointments,
             'users' => $users
         ];
@@ -33,6 +46,23 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         return $this->saveAppointment($request, null);
+    }
+
+    public function upcoming(Appointment $appointment)
+    {
+        $userTimezone = auth()->user()->preferred_timezone;
+        $now = Carbon::now($userTimezone);
+        $data['title'] = 'Upcoming Appointments';
+
+        $data['appointments'] = $appointment->where(function ($query) {
+            $query->where('creator_id', auth()->id())
+                ->orWhere('receiver_id', auth()->id());
+        })
+            ->where('start', '>=', $now)
+            ->orderBy('start', 'asc')
+            ->get();
+
+        return view('dashboard.upcoming', $data);
     }
 
     /**
@@ -55,14 +85,14 @@ class AppointmentController extends Controller
             ])->first();
 
             if (!$appointment) {
-                return redirect()->route('dashboard.appointment.index')->with('error', 'Data bukan milik Anda.');
+                return redirect()->back()->with('error', 'Data bukan milik Anda.');
             }
 
             $appointment->delete();
 
-            return redirect()->route('dashboard.appointment.index')->with('success', 'Data berhasil dihapus.');
+            return redirect()->back()->with('success', 'Data berhasil dihapus.');
         } catch (Exception $e) {
-            return redirect()->route('dashboard.appointment.index')->with('error', 'Terjadi kesalahan.');
+            return redirect()->back()->with('error', 'Terjadi kesalahan.');
         }
     }
 

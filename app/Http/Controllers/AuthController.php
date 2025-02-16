@@ -44,7 +44,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard.appointment.index')->with('success', 'Halo, ' . Auth::user()->name . '!');
+        return redirect()->route('dashboard.appointment.index', ['creator' => 'true'])->with('success', 'Halo, ' . Auth::user()->name . '!');
     }
 
     public function logout(Request $request)
