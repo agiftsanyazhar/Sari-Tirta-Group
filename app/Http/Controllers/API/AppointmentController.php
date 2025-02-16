@@ -169,12 +169,17 @@ class AppointmentController extends Controller
         $userLocalTime = Carbon::now($userTimezone)->toDateTimeString();
 
         if (!Helper::isWorkingHours($start) || !Helper::isWorkingHours($end)) {
-            return response()->json(['success' => false, 'error' => 'Appointment must be within working hours (08:00 - 17:00).'], 400);
+            return response()->json([
+                'success' => false,
+                'message' => 'Your timezone is set to ' . auth()->user()->preferred_timezone . ' and your local time is ' . $userLocalTime . ', which is outside of working hours (08:00 - 17:00).',
+                'error' => 'Start time or end time must be within working hours (08:00 - 17:00).'
+            ], 400);
         }
 
         if ($end->lte($start)) {
             return response()->json([
                 'success' => false,
+                'message' => 'Your timezone is set to ' . auth()->user()->preferred_timezone . ' and your local time is ' . $userLocalTime . ', which is outside of working hours (08:00 - 17:00).',
                 'error' => 'End time must be later than start time.'
             ], 400);
         }

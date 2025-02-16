@@ -17,7 +17,8 @@ class AuthController extends Controller
             $data = $request->validate([
                 'name' => 'required|string|max:255',
                 'username' => 'required|string|max:255|unique:users',
-                'password' => 'required|string|min:8|confirmed',
+                'preferred_timezone' => 'required|string|max:255|exists:users,preferred_timezone',
+                'password' => 'required|string|min:8',
             ]);
 
             $data['password'] = Hash::make($data['password']);

@@ -13,6 +13,6 @@ class Helper
 
     public static function isWorkingHours($time)
     {
-        return $time->hour >= 8 && $time->hour <= 17;
+        return $time->hour > 7 && $time->hour < 18;
     }
 }

@@ -21,8 +21,6 @@ class AppointmentSeeder extends Seeder
                 'receiver_id' => rand(1, 3),
                 'start' => now()->addDays(rand(1, 30))->hours(rand(8, 16))->minutes(rand(0, 59))->seconds(rand(0, 59)),
                 'end' => now()->addDays(rand(1, 30))->hours(rand(8, 16))->minutes(rand(0, 59))->seconds(rand(0, 59)),
-                // 'start' => now()->subDays(rand(1, 30))->hour(rand(8, 16))->minute(rand(0, 59))->second(rand(0, 59)),
-                // 'end' => now()->subDays(rand(1, 30))->hour(rand(8, 16))->minute(rand(0, 59))->second(rand(0, 59)),
 
             ];
         }

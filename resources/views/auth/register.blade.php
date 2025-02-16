@@ -25,11 +25,26 @@
                             </div>
                         @endif
 
-                        <form class="row g-3" action="{{ route('login.store') }}" method="POST">
+                        <form class="row g-3" action="{{ route('register.store') }}" method="POST">
                             @csrf
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Name</label>
+                                <input type="name" name="name" class="form-control" required />
+                            </div>
+
                             <div class="col-12">
                                 <label class="form-label fw-bold">Username</label>
                                 <input type="username" name="username" class="form-control" required />
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Timezone</label>
+                                <select name="preferred_timezone" class="form-select" required>
+                                    <option value="" disabled selected hidden>Select your timezone</option>
+                                    <option value="Asia/Jakarta">Jakarta (UTC+7)</option>
+                                    <option value="Pacific/Auckland">Auckland (UTC+12)</option>
+                                    <option value="Europe/Berlin">Berlin (UTC+1)</option>
+                                </select>
                             </div>
 
                             <div class="col-12">
@@ -38,11 +53,11 @@
                             </div>
 
                             <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit">Login</button>
+                                <button class="btn btn-primary w-100" type="submit">Register</button>
                             </div>
 
                             <div class="col-12">
-                                <p class="small mb-0">Don't have an account? <a href="{{ route('auth', ['register' => 'true']) }}">Register</a></p>
+                                <p class="small mb-0">Already have an account? <a href="{{ route('auth', ['login' => 'true']) }}">Login</a></p>
                             </div>
                         </form>
                     </div>

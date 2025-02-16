@@ -2,62 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\{LoginRequest, RegisterRequest};
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{Http, Session};
-use PhpParser\Node\Stmt\Echo_;
+use Illuminate\Support\Facades\{Auth, Hash};
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $data['title'] = 'Login';
+        $page = $request->query('login') ? 'login' : 'register';
+        $data['title'] = ucfirst($page);
 
-        return view('auth.login', $data);
+        return view("auth.{$page}", $data);
     }
 
-    public function login(Request $request)
+    public function register(RegisterRequest $request)
     {
         try {
-            $response = Http::post(url('/api/login'), [
-                'username' => $request->username,
-                'password' => $request->password,
+            $data = $request->only([
+                'name',
+                'username',
+                "preferred_timezone",
+                'password',
             ]);
 
-            $data = $response->json();
+            $data['password'] = Hash::make($data['password']);
 
-            if ($response->successful() && isset($data['data'])) {
-                Session::put('user', $data['data']);
+            User::create($data);
 
-                // return redirect()->route('dashboard.index')->with('success', 'Login berhasil!');
-                return "Login berhasil!";
-            } else {
-                $errorMessage = $data['message'] ?? 'Login gagal, coba lagi.';
-
-                if (isset($data['errors']['error'])) {
-                    $errorMessage = $data['errors']['error'];
-                }
-
-                return back()->with('alert', $errorMessage)->withInput();
-            }
+            return redirect()->route('auth', ['login' => 'true'])->with('success', 'Register berhasil!');
         } catch (Exception $e) {
-            return back()->with('alert', 'Terjadi kesalahan pada server: ' . $e->getMessage())->withInput();
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
-    public function logout()
+    public function login(LoginRequest $request)
     {
-        $token = Session::get('auth_token');
+        $request->authenticate();
 
-        if ($token) {
-            Http::withToken($token)->post(url('/api/logout'));
-        }
+        $request->session()->regenerate();
 
-        Session::forget(['auth_token', 'user']);
+        return redirect()->route('dashboard.appointment.index')->with('success', 'Halo, ' . Auth::user()->name . '!');
+    }
 
-        return redirect()->route('login')->with('success', 'Logout berhasil.');
+    public function logout(Request $request)
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('auth', ['login' => 'true'])->with('success', 'Logout berhasil!');
     }
 }
