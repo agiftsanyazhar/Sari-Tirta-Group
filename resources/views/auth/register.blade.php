@@ -28,19 +28,19 @@
                         <form class="row g-3" action="{{ route('register.store') }}" method="POST">
                             @csrf
                             <div class="col-12">
-                                <label class="form-label fw-bold">Name</label>
+                                <label class="form-label fw-bold">Nama<span class="text-danger fw-bold">*</span></label>
                                 <input type="name" name="name" class="form-control" required />
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold">Username</label>
+                                <label class="form-label fw-bold">Username<span class="text-danger fw-bold">*</span></label>
                                 <input type="username" name="username" class="form-control" required />
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold">Timezone</label>
+                                <label class="form-label fw-bold">Timezone<span class="text-danger fw-bold">*</span></label>
                                 <select name="preferred_timezone" class="form-select" required>
-                                    <option value="" disabled selected hidden>Select your timezone</option>
+                                    <option value="" disabled selected hidden>Pilih timezone</option>
                                     <option value="Asia/Jakarta">Jakarta (UTC+7)</option>
                                     <option value="Pacific/Auckland">Auckland (UTC+12)</option>
                                     <option value="Europe/Berlin">Berlin (UTC+1)</option>
@@ -48,7 +48,7 @@
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold">Password</label>
+                                <label class="form-label fw-bold">Password<span class="text-danger fw-bold">*</span></label>
                                 <input type="password" name="password" class="form-control" required />
                             </div>
 

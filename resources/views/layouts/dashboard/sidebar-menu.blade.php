@@ -2,12 +2,12 @@
     <ul class="menu">
 
         <!-- Sidebar Item: Bio -->
-        {{-- <li class="sidebar-item {{ request()->is('admin/profil-organisasi/bio*') ? 'active' : '' }}">
-            <a href="{{ route('admin.organization-profile.bio.index') }}" class="sidebar-link">
+        <li class="sidebar-item {{ request()->is('dashboard/appointment*') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.appointment.index') }}" class="sidebar-link">
                 <i class="bi bi-info-circle-fill"></i>
-                <span>Bio</span>
+                <span>Appointments</span>
             </a>
-        </li> --}}
+        </li>
 
     </ul>
 </div>

@@ -18,9 +18,9 @@
                             </div>
                         @endif
 
-                        @if (session('danger') || $errors->any() || session()->has('alert'))
+                        @if (session('error'))
                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                {{ $errors->first() ?? session('alert') }}
+                                {{ session('error') }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
@@ -28,12 +28,12 @@
                         <form class="row g-3" action="{{ route('login.store') }}" method="POST">
                             @csrf
                             <div class="col-12">
-                                <label class="form-label fw-bold">Username</label>
+                                <label class="form-label fw-bold">Username<span class="text-danger fw-bold">*</span></label>
                                 <input type="username" name="username" class="form-control" required />
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label fw-bold">Password</label>
+                                <label class="form-label fw-bold">Password<span class="text-danger fw-bold">*</span></label>
                                 <input type="password" name="password" class="form-control" required />
                             </div>
 

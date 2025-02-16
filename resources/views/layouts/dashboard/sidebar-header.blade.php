@@ -3,7 +3,7 @@
         <!-- Logo -->
         <div class="logo">
             <a href="{{ route('dashboard.appointment.index') }}">
-                <span class="fs-5">Appointment</span>
+                <span class="fs-4">Dashboard</span>
             </a>
         </div>
 
