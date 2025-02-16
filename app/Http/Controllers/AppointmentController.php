@@ -24,20 +24,28 @@ class AppointmentController extends Controller
             $query->where('creator_id', $userId);
             $appointments = $query->with('receiver')->get();
             $title = 'My Appointments';
+
+            $data = [
+                'title' => $title,
+                'appointments' => $appointments,
+                'users' => $users
+            ];
+
+            return view('dashboard.appointment', $data);
         }
         if ($request->query('receiver') === 'true') {
             $query->where('receiver_id', $userId);
             $appointments = $query->with('creator')->get();
             $title = 'My Invitations';
+
+            $data = [
+                'title' => $title,
+                'appointments' => $appointments,
+                'users' => $users
+            ];
+
+            return view('dashboard.invitation', $data);
         }
-
-        $data = [
-            'title' => $title,
-            'appointments' => $appointments,
-            'users' => $users
-        ];
-
-        return view('dashboard.index', $data);
     }
 
     /**

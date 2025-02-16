@@ -19,7 +19,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Judul</th>
-                                <th>Pembuat</th>
                                 <th>Penerima</th>
                                 <th>Waktu Mulai</th>
                                 <th>Waktu Selesai</th>
@@ -31,7 +30,6 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $appointment->title }}</td>
-                                    <td>{{ $appointment->creator->name }}</td>
                                     <td>{{ $appointment->receiver->name }}</td>
                                     <td>{{ $appointment->start }}</td>
                                     <td>{{ $appointment->end }}</td>
